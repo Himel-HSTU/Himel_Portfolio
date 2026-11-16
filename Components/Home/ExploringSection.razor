@@ -1,0 +1,37 @@
+﻿<section id="exploring" class="section-block" aria-labelledby="exploring-heading">
+    <div class="container-frame">
+        <div class="section-grid-split" style="margin-bottom: 3rem;">
+            <!-- Left Rail -->
+            <SectionHeader DomainTag="BEYOND // FUTURE DIRECTIONS"
+                           Title="Looking Ahead."
+                           Subtitle="A collection of areas I want to explore, skills I hope to develop, and ideas I'd love to turn into something of my own." />
+
+            <!-- Right Content Canvas: 4 Focus Pillars -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+                @foreach (var item in PortfolioData.ExploringFocusAreas)
+                {
+                    <article class="timeline-node">
+                        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--status-exploring); margin-bottom: 0.45rem;">
+                            @item.Category.ToUpperInvariant()
+                        </div>
+                        <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+                            @item.Title
+                        </h3>
+                        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                            @item.Summary
+                        </p>
+                    </article>
+                }
+            </div>
+        </div>
+
+        <!-- Dynamic Skills Filtered to 'Currently Learning' & 'Exploring' 
+        <div>
+            <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+                ACTIVE LEARNING &amp; EXPLORATION RADAR (DYNAMICALLY SYNCED FROM PORTFOLIO DATA)
+            </div>
+            <SkillArsenalView Mode="SkillArsenalView.ArsenalDisplayMode.CurrentlyExploring" />
+        </div>
+        -->
+    </div>
+</section>

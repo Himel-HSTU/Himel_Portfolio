@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HIMEL — Software Engineer | .NET | AI</title>
+    <meta name="description" content="Portfolio of MD Habibur Rahman Himel — Software Engineer specializing in .NET and AI, Competitive Programmer, ECE Undergraduate at HSTU, and Founder of pcBhai." />
+    <meta name="author" content="MD Habibur Rahman Himel" />
+    <meta name="theme-color" content="#090B0E" />
+
+    <!-- Open Graph / Social Metadata -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="HIMEL — Software Engineer | .NET | AI" />
+    <meta property="og:description" content="Software Engineer | .NET | AI · Competitive Programmer · Founder of pcBhai." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HIMEL — Software Engineer | .NET | AI" />
+
+    <base href="/" />
+
+    <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Master Design System CSS -->
+    <link rel="stylesheet" href="css/app.css" />
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B8C2KFZK5Y"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-B8C2KFZK5Y');
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Architectural Pre-Render Boot Screen -->
+        <div class="boot-screen" role="status" aria-label="Initializing portfolio">
+            <div class="boot-inner">
+                <div class="boot-brand">HIMEL<span class="accent-dot">.</span></div>
+                <div class="boot-meta">HELLO, WORLD! // AS-SALAMU ALAYKUM!</div>
+                <div class="boot-bar">
+                    <div class="boot-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui" role="alert">
+        <span>An unexpected runtime error occurred.</span>
+        <a href="" class="reload">Reload Interface</a>
+        <a class="dismiss" aria-label="Dismiss error">✕</a>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+                window.himelPortfolio = {
+                    scrollToElement: function (elementId) {
+                        const el = document.getElementById(elementId);
+                        if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    },
+                    scrollToTop: function () {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    },
+                    registerCommandShortcut: function (dotNetHelper) {
+                        window.addEventListener('keydown', function (e) {
+                            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                                e.preventDefault();
+                                dotNetHelper.invokeMethodAsync('ToggleTerminalFromShortcut');
+                            }
+                            if (e.key === 'Escape') {
+                                dotNetHelper.invokeMethodAsync('CloseTerminalFromShortcut');
+                            }
+                        });
+                    },
+                    focusElement: function (elementId) {
+                        setTimeout(() => {
+                            const el = document.getElementById(elementId);
+                            if (el) el.focus();
+                        }, 60);
+                    }
+                };
+    </script>
+</body>
+
+</html>

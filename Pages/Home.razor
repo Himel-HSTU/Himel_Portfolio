@@ -1,0 +1,85 @@
+﻿@page "/"
+
+<PageTitle>HIMEL — Software Engineer | .NET | AI</PageTitle>
+
+<!-- SECTION 01 — HERO -->
+<HeroSection />
+
+<!-- SECTION 02 — ABOUT ME -->
+<AboutSection />
+
+<!-- SECTION 03 — EDUCATION -->
+<EducationSection />
+
+<!-- SECTION 04 — TECHNICAL ARSENAL (CORE COMPETENCIES: WORKING WITH & FAMILIAR WITH) -->
+<section id="skills" class="section-block" aria-labelledby="arsenal-heading">
+    <div class="container-frame">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2.25rem;">
+            <div>
+                <div class="section-index-tag">BUILDING BLOCKS // MY TOOLKIT</div>
+                <h2 id="arsenal-heading" class="section-title" style="margin-bottom: 0.5rem;">
+                    Technical Arsenal.
+                </h2>
+                <p class="section-subtitle" style="max-width: 68ch;">
+                    A collection of technologies, tools, and engineering concepts I work with, alongside those I'm familiar with. Always learning, improving, and expanding my technical skill set. Will keep adding more, In Shaa Allah.
+                </p>
+            </div>
+        </div>
+
+        <SkillArsenalView Mode="SkillArsenalView.ArsenalDisplayMode.CoreCompetencies" />
+    </div>
+</section>
+
+<!-- SECTION 05 — FEATURED PROJECTS (REGRETBOOK, HSTU CLUBBIES, HSTU ALUMNIBOOK) -->
+<section id="projects" class="section-block" aria-labelledby="featured-projects-heading">
+    <div class="container-frame">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2.5rem;">
+            <div>
+
+                <div>
+                    <div class="section-index-tag">ENGINEERING // PROJECTS</div>
+                    <h2 id="featured-projects-heading" class="section-title" style="margin-bottom: 0.5rem;">
+                        Things I've Built & Building.
+                    </h2>
+                    <p class="section-subtitle" style="max-width: 65ch;">
+                        A selection of software projects driven by curiosity, practical challenges, and a passion for building useful systems—from backend engineering to full-stack applications.
+                    </p>
+                </div>
+                </div>
+
+            <a href="/projects" class="btn btn-primary">
+                <span>Explore All Projects</span>
+                <span>→</span>
+            </a>
+        </div>
+
+        <div class="projects-stack">
+            @{
+                var index = 1;
+            }
+            @foreach (var project in PortfolioData.Projects.Where(p => p.IsFeaturedOnHome))
+            {
+                <ProjectShowcaseCard Project="project" IndexNumber="index" />
+                index++;
+            }
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 06 — COMPETITIVE PROGRAMMING -->
+<CompetitiveSection />
+
+<!-- SECTION 07 — ICPC / IUPC JOURNEY -->
+<IcpcJourneySection />
+
+<!-- SECTION 08 — UNIVERSITY CLUBS & EXTRACURRICULAR ACTIVITIES -->
+<ClubsSection />
+
+<!-- SECTION 09 — pcBhai INTRODUCTION -->
+<PcBhaiIntroSection />
+
+<!-- SECTION 10 — CURRENTLY EXPLORING -->
+<ExploringSection />
+
+<!-- SECTION 11 — CONTACT -->
+<ContactSection />

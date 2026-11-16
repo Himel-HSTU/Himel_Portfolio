@@ -1,0 +1,149 @@
+﻿<article class="project-ledger-card">
+    <!-- Left Column: Core Narrative, Problem & Links -->
+    <div class="project-ledger-main">
+        <div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem;">
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+                    SYS.PRJ // @(IndexNumber.ToString("00")) · @Project.Category
+                </span>
+                <span class="project-status-badge @Project.Status">
+                    <span class="status-dot @GetStatusDot(Project.Status)"></span>
+                    @FormatProjectStatus(Project.Status)
+                </span>
+            </div>
+
+            <h3 class="project-title-lg">
+                <a href="/projects/@Project.Slug">@Project.Title</a>
+            </h3>
+
+            <p style="font-family: var(--font-display); font-size: 1.02rem; color: var(--text-primary); margin-bottom: 0.85rem;">
+                @Project.Tagline
+            </p>
+
+            <p style="color: var(--text-secondary); font-size: 0.94rem; line-height: 1.65; margin-bottom: 1rem;">
+                @Project.ShortDescription
+            </p>
+
+            @if (Project.HasPlaceholderNotice)
+            {
+                <div class="placeholder-callout">
+                    More Project Details & Visual Updates Coming Soon...
+                </div>
+            }
+        </div>
+
+        <div>
+            <div class="tag-cluster" style="margin-bottom: 1.5rem;">
+                @foreach (var tech in Project.TechStack)
+                {
+                    <span class="tech-tag">@tech</span>
+                }
+            </div>
+
+            <div class="hero-cta-row">
+                <a href="/projects/@Project.Slug" class="btn btn-primary">
+                    Read Engineering Case Study
+                </a>
+                @if (!string.IsNullOrWhiteSpace(Project.GitHubUrl))
+                {
+                    <a href="@Project.GitHubUrl" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                        GitHub Repo ↗
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(Project.LiveDemoUrl))
+                {
+                    <a href="@Project.LiveDemoUrl" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                        Live Demo ↗
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Architectural Blueprint & Problem/Motivation Spec -->
+    <div class="project-ledger-aside">
+        <div>
+            <!-- 1. PROBLEM STATEMENT -->
+            <div style="margin-bottom: 1.25rem;">
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); letter-spacing: 0.06em; margin-bottom: 0.45rem;">
+                    PROBLEM STATEMENT
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.3rem; @(_expandProblem ? "" : "display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;")">
+                    @Project.ProblemStatement
+                </p>
+                @if (!string.IsNullOrWhiteSpace(Project.ProblemStatement) && Project.ProblemStatement.Length > 90)
+                {
+                    <button type="button"
+                            @onclick="() => _expandProblem = !_expandProblem"
+                            style="background: transparent; border: none; padding: 0; font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;">
+                        @(_expandProblem ? "Show Less ↑" : "Read More ↓")
+                    </button>
+                }
+            </div>
+
+            <!-- 2. ENGINEERING MOTIVATION -->
+            <div style="margin-bottom: 1.25rem;">
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); letter-spacing: 0.06em; margin-bottom: 0.45rem;">
+                    ENGINEERING MOTIVATION
+                </div>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.3rem; @(_expandMotivation ? "" : "display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;")">
+                    @Project.Motivation
+                </p>
+                @if (!string.IsNullOrWhiteSpace(Project.Motivation) && Project.Motivation.Length > 90)
+                {
+                    <button type="button"
+                            @onclick="() => _expandMotivation = !_expandMotivation"
+                            style="background: transparent; border: none; padding: 0; font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;">
+                        @(_expandMotivation ? "Show Less ↑" : "Read More ↓")
+                    </button>
+                }
+            </div>
+        </div>
+
+        <!-- 3. ARCHITECTURE OVERVIEW -->
+        <div style="border-top: 1px solid var(--border-grid); padding-top: 1rem;">
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.35rem;">
+                ARCHITECTURE OVERVIEW
+            </div>
+            <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-primary); line-height: 1.55; margin-bottom: 0.3rem; @(_expandArchitecture ? "" : "display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;")">
+                @Project.ArchitectureOverview
+            </p>
+            @if (!string.IsNullOrWhiteSpace(Project.ArchitectureOverview) && Project.ArchitectureOverview.Length > 85)
+            {
+                <button type="button"
+                        @onclick="() => _expandArchitecture = !_expandArchitecture"
+                        style="background: transparent; border: none; padding: 0; font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;">
+                    @(_expandArchitecture ? "Show Less ↑" : "Read More ↓")
+                </button>
+            }
+        </div>
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public ProjectItem Project { get; set; } = default!;
+
+    [Parameter]
+    public int IndexNumber { get; set; } = 1;
+
+    private bool _expandProblem;
+    private bool _expandMotivation;
+    private bool _expandArchitecture;
+
+    private static string FormatProjectStatus(ProjectStatus status) => status switch
+    {
+        ProjectStatus.Completed => "Completed",
+        ProjectStatus.InProgress => "In Progress",
+        ProjectStatus.Planned => "Planned",
+        _ => status.ToString()
+    };
+
+    private static string GetStatusDot(ProjectStatus status) => status switch
+    {
+        ProjectStatus.Completed => "dot-working",
+        ProjectStatus.InProgress => "dot-learning",
+        ProjectStatus.Planned => "dot-exploring",
+        _ => "dot-familiar"
+    };
+}

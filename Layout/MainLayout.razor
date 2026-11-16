@@ -1,0 +1,64 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject IJSRuntime JS
+
+<div class="app-shell">
+    <Navbar OnOpenTerminal="OpenTerminal" />
+
+    <main id="main-content" role="main">
+        @Body
+    </main>
+
+    <Footer OnOpenTerminal="OpenTerminal" />
+
+    <CommandTerminalModal @ref="_terminalModal" />
+</div>
+
+@code {
+    private CommandTerminalModal? _terminalModal;
+    private DotNetObjectReference<MainLayout>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeVoidAsync("himelPortfolio.registerCommandShortcut", _dotNetRef);
+            }
+            catch
+            {
+                // Ignore if pre-rendering or JS not yet ready
+            }
+        }
+    }
+
+    private async Task OpenTerminal()
+    {
+        if (_terminalModal is not null)
+        {
+            await _terminalModal.OpenAsync();
+        }
+    }
+
+    [JSInvokable]
+    public async Task ToggleTerminalFromShortcut()
+    {
+        if (_terminalModal is not null)
+        {
+            await _terminalModal.ToggleAsync();
+        }
+    }
+
+    [JSInvokable]
+    public void CloseTerminalFromShortcut()
+    {
+        _terminalModal?.Close();
+    }
+
+    public void Dispose()
+    {
+        _dotNetRef?.Dispose();
+    }
+}

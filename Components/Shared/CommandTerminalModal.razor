@@ -1,0 +1,240 @@
+﻿@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+@if (_isOpen)
+{
+    <div class="terminal-backdrop" @onclick="Close" role="dialog" aria-modal="true" aria-label="HIMEL Interactive Command Terminal">
+        <div class="terminal-window" @onclick:stopPropagation="true">
+            <!-- Terminal Header Bar -->
+            <div class="terminal-titlebar">
+                <div>
+                    <span style="color: var(--accent-primary); font-weight: 600;">HIMEL.CLI</span>
+                    <span style="margin-left: 0.5rem;">// Interactive Portfolio Shell v1.0</span>
+                </div>
+                <button type="button"
+                        @onclick="Close"
+                        style="background: transparent; border: 1px solid var(--border-grid); color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.72rem; padding: 0.15rem 0.5rem; cursor: pointer;">
+                    ESC / Close
+                </button>
+            </div>
+
+            <!-- Quick-Run Command Chips (Accessible via Mouse/Touch or Keyboard) -->
+            <div style="padding: 0.65rem 1.25rem; border-bottom: 1px solid var(--border-grid); background: var(--bg-Elevated); display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
+                <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-right: 0.35rem;">Quick commands:</span>
+                @foreach (var cmd in _quickCommands)
+                {
+                    <button type="button"
+                            @onclick="() => RunPresetCommand(cmd)"
+                            style="background: var(--bg-obsidian); border: 1px solid var(--border-grid); color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.72rem; padding: 0.2rem 0.55rem; cursor: pointer;">
+                        @cmd
+                    </button>
+                }
+            </div>
+
+            <!-- Terminal Output Log -->
+            <div class="terminal-output">
+                @foreach (var entry in _history)
+                {
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(entry.CommandEntered))
+                        {
+                            <div style="color: var(--accent-primary); margin-bottom: 0.2rem;">
+                                himel@portfolio:~$ @entry.CommandEntered
+                            </div>
+                        }
+                        <div style="color: var(--text-primary); white-space: pre-wrap;">@entry.ResponseText</div>
+                    </div>
+                }
+            </div>
+
+            <!-- Command Input Form -->
+            <form class="terminal-input-row" @onsubmit="HandleCommandSubmit" @onsubmit:preventDefault="true">
+                <span class="terminal-prompt-symbol">himel@portfolio:~$</span>
+                <input id="himel-terminal-input"
+                       class="terminal-input"
+                       type="text"
+                       placeholder="Type a command (help, about, skills, projects, cp, pcbhai, contact, clear)..."
+                       @bind="_currentInput"
+                       @bind:event="oninput"
+                       autocomplete="off"
+                       spellcheck="false" />
+                <button type="submit"
+                        style="background: var(--accent-primary); color: var(--bg-obsidian); border: none; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.75rem; cursor: pointer;">
+                    RUN
+                </button>
+            </form>
+        </div>
+    </div>
+}
+
+@code {
+    private sealed record TerminalLogEntry(string? CommandEntered, string ResponseText);
+
+    private bool _isOpen;
+    private string _currentInput = string.Empty;
+
+    private readonly string[] _quickCommands = ["help", "about", "skills", "projects", "cp", "pcbhai", "contact", "clear"];
+
+    private readonly List<TerminalLogEntry> _history =
+    [
+        new(null, "HIMEL Interactive Shell initialized.\nIdentity: Software Engineer | .NET | AI\nType 'help' or click a command chip above to inspect sections.")
+    ];
+
+    public async Task OpenAsync()
+    {
+        _isOpen = true;
+        StateHasChanged();
+        await JS.InvokeVoidAsync("himelPortfolio.focusElement", "himel-terminal-input");
+    }
+
+    public async Task ToggleAsync()
+    {
+        if (_isOpen)
+        {
+            Close();
+        }
+        else
+        {
+            await OpenAsync();
+        }
+    }
+
+    public void Close()
+    {
+        _isOpen = false;
+        StateHasChanged();
+    }
+
+    private async Task RunPresetCommand(string cmd)
+    {
+        _currentInput = cmd;
+        await HandleCommandSubmit();
+    }
+
+    private async Task HandleCommandSubmit()
+    {
+        var raw = _currentInput.Trim();
+        _currentInput = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return;
+        }
+
+        var lower = raw.ToLowerInvariant();
+
+        if (lower == "clear")
+        {
+            _history.Clear();
+            return;
+        }
+
+        if (lower == "exit" || lower == "quit")
+        {
+            Close();
+            return;
+        }
+
+        string response;
+
+        switch (lower)
+        {
+            case "help":
+                response =
+                    "Available commands:\n" +
+                    "  about      -> Professional identity & HSTU ECE academic background\n" +
+                    "  skills     -> Core Technical Arsenal (.NET, C#, SQL, AI)\n" +
+                    "  projects   -> Featured Software Engineering projects\n" +
+                    "  cp         -> Competitive Programming & ICPC preliminary log\n" +
+                    "  pcbhai     -> pcBhai brand stats (6,000+ subs, 100+ PCs built)\n" +
+                    "  contact    -> Direct email & professional profiles\n" +
+                    "  goto <pg>  -> Navigate to: home, projects, pcbhai, blog, resume\n" +
+                    "  clear      -> Clear terminal output\n" +
+                    "  exit       -> Close terminal window";
+                break;
+
+            case "about":
+                response =
+                    $"{PortfolioData.FullName}\n" +
+                    $"Role: {PortfolioData.PrimaryIdentity}\n" +
+                    $"Academic Stage: Third-year second semester (3-II) B.Sc. in ECE at HSTU, Bangladesh (2023–2028).\n" +
+                    $"Focus: Backend engineering with C# and ASP.NET Core, competitive programming in C++, and AI exploration.";
+                break;
+
+            case "skills":
+                var workingWith = PortfolioData.Skills
+                    .Where(s => s.Status == SkillStatus.WorkingWith)
+                    .Select(s => s.Name);
+                var exploring = PortfolioData.Skills
+                    .Where(s => s.Status is SkillStatus.CurrentlyLearning or SkillStatus.Exploring)
+                    .Select(s => s.Name);
+                response =
+                    "[WORKING WITH]: " + string.Join(", ", workingWith) + "\n\n" +
+                    "[CURRENTLY LEARNING & EXPLORING]: " + string.Join(", ", exploring);
+                break;
+
+            case "projects":
+                response = string.Join("\n", PortfolioData.Projects.Select((p, i) =>
+                    $"0{i + 1}. {p.Title} [{p.Status}] — {p.Tagline} (Route: /projects/{p.Slug})")) +
+                    "\n\nTip: Type 'goto projects' to open the full project portfolio.";
+                break;
+
+            case "cp":
+                response =
+                    "Competitive Programming & Contest Log:\n" +
+                    string.Join("\n", PortfolioData.CpProfiles.Select(c => $"  • {c.PlatformName}: {c.RankTitleDisplay} ({c.SolvedCountDisplay})")) +
+                    "\n  • ICPC Asia Dhaka Preliminary (Nov 2025): Official Online Preliminary Participation";
+                break;
+
+            case "pcbhai":
+                response =
+                    "pcBhai — Technology & Custom PC-Building Brand in Bangladesh\n" +
+                    $"  • YouTube Subscribers: {PortfolioData.PcBhaiSubscribersStat}\n" +
+                    $"  • Published Tech Videos: {PortfolioData.PcBhaiVideosStat}\n" +
+                    $"  • Custom PCs Built & Delivered: {PortfolioData.PcBhaiBuildsDeliveredStat}\n" +
+                    "Tip: Type 'goto pcbhai' to open the dedicated pcBhai brand experience.";
+                break;
+
+            case "contact":
+                response =
+                    $"Email:    {PortfolioData.EmailAddress}\n" +
+                    $"GitHub:   {PortfolioData.GitHubUrl}\n" +
+                    $"LinkedIn: {PortfolioData.LinkedInUrl}\n" +
+                    $"YouTube:  {PortfolioData.YouTubeChannelUrl}";
+                break;
+
+            case "goto home":
+            case "goto /":
+                Nav.NavigateTo("/");
+                Close();
+                return;
+
+            case "goto projects":
+                Nav.NavigateTo("/projects");
+                Close();
+                return;
+
+            case "goto pcbhai":
+                Nav.NavigateTo("/pcbhai");
+                Close();
+                return;
+
+            case "goto blog":
+                Nav.NavigateTo("/blog");
+                Close();
+                return;
+
+            case "goto resume":
+                Nav.NavigateTo("/resume");
+                Close();
+                return;
+
+            default:
+                response = $"Unknown command: '{raw}'. Type 'help' to see supported commands.";
+                break;
+        }
+
+        _history.Add(new TerminalLogEntry(raw, response));
+        await JS.InvokeVoidAsync("himelPortfolio.focusElement", "himel-terminal-input");
+    }
+}

@@ -1,0 +1,233 @@
+﻿@inject IJSRuntime JS
+
+<section class="hero-section" aria-label="Introduction and Identity">
+    <div class="container-frame">
+        <div class="hero-grid">
+            <!-- Left Column: Architectural Split-Stem Headline & Identity -->
+            <div>
+                <div class="hero-status-bar">
+                    <span class="status-pulse-dot" aria-hidden="true"></span>
+                    <span>@PortfolioData.TopLine.ToUpperInvariant()</span>
+                    <span style="color: var(--border-grid);">|</span>
+                    <span>@PortfolioData.TopLine2.ToUpperInvariant()</span>
+                </div>
+
+                <!-- Bespoke Split-Stem Lockup: "I LOVE" used once on left bus, 3 stacked lines on right -->
+                <h1 class="hero-lockup" aria-label="I love solving problems, building things, exploring tech.">
+                    <span class="hero-stem-anchor">
+                        <span class="hero-stem-phrase">@PortfolioData.HeroStemAnchor</span>
+                        <span class="hero-stem-subtitle">EST. 2003</span>
+                    </span>
+
+                    <span class="hero-branch-stack">
+                        <span class="hero-branch-line">
+                            <span>@PortfolioData.HeroLine1.TrimEnd('.')<span class="hero-terminal-dot">.</span></span>
+                        </span>
+                        <span class="hero-branch-line muted-line">
+                            <span>@PortfolioData.HeroLine2.TrimEnd('.')<span class="hero-terminal-dot">.</span></span>
+                        </span>
+                        <span class="hero-branch-line">
+                            <span>@PortfolioData.HeroLine3.TrimEnd('.')<span class="hero-terminal-dot">.</span></span>
+                        </span>
+                    </span>
+                </h1>
+
+                <!-- Professional Identity Lockup -->
+                <div class="hero-identity-box">
+                    <div class="hero-primary-identity">
+                        <span>Software Engineer</span>
+                        <span class="pipe">|</span>
+                        <span>.NET</span>
+                        <span class="pipe">|</span>
+                        <span>AI</span>
+                    </div>
+                    <div class="hero-supporting-identities" style="color: var(--accent-pcbhai);">
+                        @string.Join(" · ", PortfolioData.SupportingIdentities)
+                    </div>
+                </div>
+
+                <!-- Concise Personal Introduction -->
+                <p class="hero-intro-prose">
+                    @PortfolioData.HeroIntroduction
+                </p>
+
+                <!-- Primary Call-to-Action Row -->
+                <div class="hero-cta-row">
+                    <button type="button" class="btn btn-primary" @onclick='() => ScrollToSectionAsync("projects")'>
+                        <span>Explore My Work</span>
+                        <span>↓</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick='() => ScrollToSectionAsync("contact")'>
+                        <span>Get In Touch</span>
+                    </button>
+                    <a href="/resume" class="btn btn-ghost">
+                        <span>Resume / CV</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Subtle Scroll Indicator -->
+                <div style="margin-top: 2.75rem; display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+                    <span>THE STORY JUST STARTED. KEEP EXPLORING ↓</span>
+                    <button type="button"
+                            @onclick='() => ScrollToSectionAsync("about")'
+                            style="background: transparent; border: none; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--accent-primary);">[SCROLL]</span>
+                        
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive Computational Node Network & Telemetry -->
+            <aside class="hero-schematic-panel" aria-label="Interactive Engineering Node Matrix">
+                <div class="schematic-header">
+                    <span>HIMEL.TOPOLOGY // WHERE CURIOSITY LEADS</span>
+                    <span style="color: var(--accent-primary);">NODE: @_activeNode.Code</span>
+                </div>
+
+                <div class="schematic-body">
+                    <!-- Interactive Computational Grid SVG -->
+                    <svg class="node-matrix-svg" viewBox="0 0 420 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive engineering system nodes">
+                        <!-- Subtle Background Reference Grid -->
+                        <g stroke="#161C24" stroke-width="1">
+                            <line x1="0" y1="42" x2="420" y2="42" />
+                            <line x1="0" y1="105" x2="420" y2="105" />
+                            <line x1="0" y1="168" x2="420" y2="168" />
+                            <line x1="84" y1="0" x2="84" y2="210" />
+                            <line x1="210" y1="0" x2="210" y2="210" />
+                            <line x1="336" y1="0" x2="336" y2="210" />
+                        </g>
+
+                        <!-- Connection Traces -->
+                        <g stroke="#263040" stroke-width="1.5">
+                            <line x1="84" y1="55" x2="210" y2="105" />
+                            <line x1="84" y1="155" x2="210" y2="105" />
+                            <line x1="210" y1="105" x2="336" y2="55" />
+                            <line x1="210" y1="105" x2="336" y2="155" />
+                            <line x1="84" y1="55" x2="84" y2="155" stroke-dasharray="4 4" />
+                            <line x1="336" y1="55" x2="336" y2="155" stroke-dasharray="4 4" />
+                        </g>
+
+                        <!-- Active Signal Line to Selected Node -->
+                        <line x1="210" y1="105"
+                              x2="@_activeNode.X"
+                              y2="@_activeNode.Y"
+                              stroke="#E06D3B"
+                              stroke-width="2.2" />
+
+                        @foreach (var node in _nodes)
+                        {
+                            var isSelected = node.Code == _activeNode.Code;
+                            <g style="cursor: pointer;" @onclick="() => SelectNode(node)">
+                                @if (isSelected)
+                                {
+                                    <circle cx="@node.X" cy="@node.Y" r="18" fill="rgba(224, 109, 59, 0.16)" stroke="#E06D3B" stroke-width="1.2" />
+                                }
+                                <circle cx="@node.X"
+                                        cy="@node.Y"
+                                        r="8"
+                                        fill="@(isSelected ? "#E06D3B" : "#10141A")"
+                                        stroke="@(isSelected ? "#EEF1F6" : "#8B95A5")"
+                                        stroke-width="2" />
+                                <text x="@node.X"
+                                      y="@(node.Y + 28)"
+                                      text-anchor="middle"
+                                      fill="@(isSelected ? "#EEF1F6" : "#8B95A5")"
+                                      font-family="JetBrains Mono, monospace"
+                                      font-size="10">
+                                    @node.ShortLabel
+                                </text>
+                            </g>
+                        }
+                    </svg>
+
+                    <!-- Interactive Node Selector Pills -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                        @foreach (var node in _nodes)
+                        {
+                            var active = node.Code == _activeNode.Code;
+                            <button type="button"
+                                    @onclick="() => SelectNode(node)"
+                                    style="font-family: var(--font-mono); font-size: 0.7rem; padding: 0.25rem 0.55rem; cursor: pointer; border: 1px solid @(active ? "var(--accent-primary)" : "var(--border-grid)"); background: @(active ? "var(--accent-primary-soft)" : "var(--bg-obsidian)"); color: @(active ? "var(--text-primary)" : "var(--text-secondary)");">
+                                @node.ShortLabel
+                            </button>
+                        }
+                    </div>
+
+                    <!-- Selected Node Specification Readout -->
+                    <div style="border: 1px solid var(--border-grid); background: var(--bg-obsidian); padding: 0.9rem 1rem;">
+                        <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-primary); margin-bottom: 0.25rem;">
+                            @_activeNode.Code // @_activeNode.Title
+                        </div>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55;">
+                            @_activeNode.Summary
+                        </p>
+                    </div>
+
+                    <!-- Core Telemetry Grid -->
+                    <div class="telemetry-grid">
+                        <div class="telemetry-cell">
+                            <div class="telemetry-label">PRIMARY STACK</div>
+                            <div class="telemetry-value">C# · ASP.NET Core</div>
+                        </div>
+                        <div class="telemetry-cell">
+                            <div class="telemetry-label">ACADEMIC STAGE</div>
+                            <div class="telemetry-value">ECE 3-II @("@") HSTU</div>
+                        </div>
+                        <div class="telemetry-cell">
+                            <div class="telemetry-label">PROBLEM SOLVING</div>
+                            <div class="telemetry-value">C++ · DSA · ICPC</div>
+                        </div>
+                        <div class="telemetry-cell">
+                            <div class="telemetry-label">TECH CONTENT CREATOR</div>
+                            <div class="telemetry-value" style="color: var(--accent-pcbhai);">pcBhai (6K+ Subs)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="schematic-footer">
+                    <span>CLICK ANY NODE TO INSPECT</span>
+                    <span>PRESS CTRL+K FOR CLI</span>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+@code {
+    private sealed record ArchitectureNode(
+        string Code,
+        string ShortLabel,
+        string Title,
+        string Summary,
+        int X,
+        int Y
+    );
+
+    
+    private static readonly IReadOnlyList<ArchitectureNode> _nodes =
+    [
+        new("SYS.00", "ME / MYSELF", "What is my Identity", "Embracing technology, problem-solving and building things. My interests span Software Engineering, Competitive Programming, System Design, Artificial Intelligence, Machine Learning and Hardwares.", 210, 105),
+
+    new("DEV.01", "C# / .NET", "Backend & Full-Stack Engineering", "Focused on building backend and full-stack applications with C# and .NET, exploring ASP.NET Core, RESTful APIs, Entity Framework Core, Software Architecture and System Design.", 84, 55),
+
+    new("CP.02", "CP / DSA", "Competitive Programming", "Passionate about algorithmic problem-solving, data structures and competitive programming in C++, with experience competing in ICPC, University-level IUPC and Online contests.", 84, 155),
+
+    new("AI.03", "AI / ML", "Artificial Intelligence & Machine Learning", "Exploring Artificial Intelligence and Machine Learning, from foundational concepts to practical applications involving LLMs, RAG, and AI-powered workflows.", 336, 55),
+
+    new("PCB.04", "pcBhai", "Tech Content & PC Building", "Creating tech content around computers, laptops, and hardware through pcBhai, alongside building and delivering customized PCs across Bangladesh.", 336, 155)
+    ];
+
+
+    private ArchitectureNode _activeNode = _nodes[0];
+
+    private void SelectNode(ArchitectureNode node)
+    {
+        _activeNode = node;
+    }
+
+    private async Task ScrollToSectionAsync(string sectionId)
+    {
+        await JS.InvokeVoidAsync("himelPortfolio.scrollToElement", sectionId);
+    }
+}

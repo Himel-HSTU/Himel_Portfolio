@@ -1,0 +1,221 @@
+﻿@page "/projects/{Slug}"
+@inject IJSRuntime JS
+
+@if (_project is null)
+{
+    <PageTitle>Project Not Found — HIMEL</PageTitle>
+    <section class="section-block">
+        <div class="container-frame">
+            <div class="timeline-node">
+                <div class="section-index-tag">ERR_404 // PROJECT_SLUG_NOT_FOUND</div>
+                <h1 class="section-title">Project case study "@Slug" was not found.</h1>
+                <p class="section-subtitle" style="margin-bottom: 1.5rem;">
+                    Verify the URL or return to the main project directory.
+                </p>
+                <a href="/projects" class="btn btn-primary">← Back to All Projects</a>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <PageTitle>@_project.Title — Engineering Case Study | HIMEL</PageTitle>
+
+    <article class="section-block">
+        <div class="container-frame">
+            <!-- Breadcrumb & Status Bar -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                <a href="/projects" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">
+                    ← BACK TO /PROJECTS
+                </a>
+
+                <span class="project-status-badge @_project.Status">
+                    <span>STATUS: @FormatProjectStatus(_project.Status) </span>
+                </span>
+            </div>
+
+            <!-- 01. Overview Header -->
+            <header style="border-bottom: 1px solid var(--border-grid); padding-bottom: 2.5rem; margin-bottom: 3rem;">
+                <div class="section-index-tag">CASE STUDY // @_project.Category.ToUpperInvariant()</div>
+                <h1 class="section-title" style="font-size: clamp(2.2rem, 4.5vw, 3.5rem); margin-bottom: 0.75rem;">
+                    @_project.Title
+                </h1>
+                <p style="font-family: var(--font-display); font-size: 1.25rem; color: var(--text-primary); margin-bottom: 1rem;">
+                    @_project.Tagline
+                </p>
+                <p style="font-size: 1.02rem; color: var(--text-secondary); max-width: 72ch; line-height: 1.7; margin-bottom: 1.75rem;">
+                    @_project.ShortDescription
+                </p>
+
+                @if (_project.HasPlaceholderNotice)
+                {
+                    <div class="placeholder-callout" style="max-width: 72ch; margin-bottom: 1.75rem;">
+                        More Project Details & Visual Updates Coming Soon...
+                    </div>
+                }
+
+                <!-- 11. Repository & Live Demo Links -->
+                <div class="hero-cta-row">
+                    @if (!string.IsNullOrWhiteSpace(_project.GitHubUrl))
+                    {
+                        <a href="@_project.GitHubUrl" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <span>View GitHub Repository</span>
+                            <span>↗</span>
+                        </a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(_project.LiveDemoUrl))
+                    {
+                        <a href="@_project.LiveDemoUrl" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            <span>Launch Live Demo</span>
+                            <span>↗</span>
+                        </a>
+                    }
+                </div>
+            </header>
+
+            <!-- 02, 03, 04: Problem Statement, Motivation & Proposed Solution -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <section class="timeline-node">
+                    <div class="section-index-tag">02 // PROBLEM STATEMENT</div>
+                    <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 0.65rem;">The Problem It Solves</h2>
+                    <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.7;">
+                        @_project.ProblemStatement
+                    </p>
+                </section>
+
+                <section class="timeline-node">
+                    <div class="section-index-tag">03 // MOTIVATION</div>
+                    <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 0.65rem;">Why Build @_project.Title</h2>
+                    <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.7;">
+                        @_project.Motivation
+                    </p>
+                </section>
+
+                <section class="timeline-node">
+                    <div class="section-index-tag">04 // SOLUTION</div>
+                    <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 0.65rem;">Proposed Engineering Solution</h2>
+                    <p style="font-size: 0.94rem; color: var(--text-secondary); line-height: 1.7;">
+                        @_project.ProposedSolution
+                    </p>
+                </section>
+            </div>
+
+            <!-- 05 & 06: System Architecture & Technology Stack -->
+            <div class="section-grid-split" style="margin-bottom: 3rem;">
+                <div>
+                    <div class="section-index-tag">05 &amp; 06 // ARCHITECTURE &amp; STACK</div>
+                    <h2 class="section-title" style="font-size: 1.65rem;">Architecture &amp; Tech Stack.</h2>
+                    <p class="section-subtitle">
+                        Core backend, data persistence, and interface technologies powering @_project.Title.
+                    </p>
+                </div>
+
+                <div class="timeline-node">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.65rem;">
+                        System Architecture Overview
+                    </h3>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">
+                        @_project.ArchitectureOverview
+                    </p>
+
+                    <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        CONFIGURED TECHNOLOGY STACK
+                    </div>
+                    <div class="tag-cluster" style="margin-top: 0;">
+                        @foreach (var tech in _project.TechStack)
+                        {
+                            <span class="tech-tag" style="color: var(--text-primary); border-color: var(--accent-primary-border);">@tech</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07 & 08: Engineering Decisions & Technical Challenges -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <section class="timeline-node">
+                    <div class="section-index-tag">07 // TECHNICAL DECISIONS</div>
+                    <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 1rem;">Important Engineering Decisions</h2>
+                    <ul style="display: flex; flex-direction: column; gap: 0.65rem;">
+                        @foreach (var decision in _project.EngineeringDecisions)
+                        {
+                            <li style="font-size: 0.92rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: baseline;">
+                                <span style="color: var(--accent-primary); font-family: var(--font-mono);">▪</span>
+                                <span>@decision</span>
+                            </li>
+                        }
+                    </ul>
+                </section>
+
+                <section class="timeline-node">
+                    <div class="section-index-tag">08 // CHALLENGES</div>
+                    <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 1rem;">Key Technical Challenges</h2>
+                    <ul style="display: flex; flex-direction: column; gap: 0.65rem;">
+                        @foreach (var challenge in _project.Challenges)
+                        {
+                            <li style="font-size: 0.92rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: baseline;">
+                                <span style="color: var(--accent-primary); font-family: var(--font-mono);">▪</span>
+                                <span>@challenge</span>
+                            </li>
+                        }
+                    </ul>
+                </section>
+            </div>
+
+            <!-- 09. Screenshots / Visual Previews Slot -->
+            <section class="timeline-node" style="margin-bottom: 3rem;">
+                <div class="section-index-tag">09 // INTERFACE &amp; SYSTEM PREVIEWS</div>
+                <h2 style="font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 0.5rem;">
+                    Screenshots &amp; Architecture Previews
+                </h2>
+  
+                <div style="border: 1px dashed var(--border-grid); background: var(--bg-obsidian); padding: 3rem 1.5rem; text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
+                   Visual Updates Coming Soon... // @_project.Title.ToUpperInvariant()
+                </div>
+            </section>
+
+            <!-- 10. Future Improvements -->
+            <section class="timeline-node">
+                <div class="section-index-tag">10 // ROADMAP</div>
+                <h2 style="font-family: var(--font-display); font-size: 1.35rem; margin-bottom: 1rem;">
+                    Planned Future Improvements
+                </h2>
+                <ul style="display: flex; flex-direction: column; gap: 0.6rem;">
+                    @foreach (var item in _project.FutureImprovements)
+                    {
+                        <li style="font-size: 0.92rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: baseline;">
+                            <span style="color: var(--accent-primary); font-family: var(--font-mono);">→</span>
+                            <span>@item</span>
+                        </li>
+                    }
+                </ul>
+            </section>
+        </div>
+    </article>
+}
+
+@code {
+    [Parameter]
+    public string? Slug { get; set; }
+
+    private ProjectItem? _project;
+    private static string FormatProjectStatus(ProjectStatus status) => status switch
+    {
+        ProjectStatus.Completed => "Completed",
+        ProjectStatus.InProgress => "In Progress",
+        ProjectStatus.Planned => "Planned",
+        _ => status.ToString()
+    };
+    protected override void OnParametersSet()
+    {
+        _project = PortfolioData.Projects.FirstOrDefault(p =>
+            string.Equals(p.Slug, Slug, StringComparison.OrdinalIgnoreCase));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToTop");
+        }
+    }
+}

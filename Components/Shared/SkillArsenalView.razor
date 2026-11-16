@@ -1,0 +1,195 @@
+﻿<div>
+    <!-- Interactive Filter & Status Legend Bar -->
+    <div class="arsenal-toolbar" role="region" aria-label="Technical Arsenal Filters">
+        <div class="status-legend">
+            @if (Mode == ArsenalDisplayMode.CoreCompetencies)
+            {
+                <button type="button"
+                        class="legend-item @(_selectedStatusFilter is null ? "active" : "")"
+                        @onclick="() => SetStatusFilter(null)">
+                    <span>All Active (@GetFilteredSkills(null).Count())</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatusFilter == SkillStatus.WorkingWith ? "active" : "")"
+                        @onclick="() => SetStatusFilter(SkillStatus.WorkingWith)">
+                    <span class="status-dot dot-working"></span>
+                    <span>Working With (@CountByStatus(SkillStatus.WorkingWith))</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatusFilter == SkillStatus.FamiliarWith ? "active" : "")"
+                        @onclick="() => SetStatusFilter(SkillStatus.FamiliarWith)">
+                    <span class="status-dot dot-familiar"></span>
+                    <span>Familiar With (@CountByStatus(SkillStatus.FamiliarWith))</span>
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="legend-item @(_selectedStatusFilter is null ? "active" : "")"
+                        @onclick="() => SetStatusFilter(null)">
+                    <span>All Exploring (@GetFilteredSkills(null).Count())</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatusFilter == SkillStatus.CurrentlyLearning ? "active" : "")"
+                        @onclick="() => SetStatusFilter(SkillStatus.CurrentlyLearning)">
+                    <span class="status-dot dot-learning"></span>
+                    <span>Currently Learning (@CountByStatus(SkillStatus.CurrentlyLearning))</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatusFilter == SkillStatus.Exploring ? "active" : "")"
+                        @onclick="() => SetStatusFilter(SkillStatus.Exploring)">
+                    <span class="status-dot dot-exploring"></span>
+                    <span>Exploring (@CountByStatus(SkillStatus.Exploring))</span>
+                </button>
+            }
+        </div>
+
+        <!-- Quick Search Input -->
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="search"
+                   placeholder="Filter technologies (e.g. C#, EF Core)..."
+                   @bind="_searchQuery"
+                   @bind:event="oninput"
+                   aria-label="Filter technologies by name"
+                   style="background: var(--bg-obsidian); border: 1px solid var(--border-grid); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.76rem; padding: 0.45rem 0.75rem; min-width: 230px;" />
+        </div>
+    </div>
+
+    <!-- Categorized Skill Grid -->
+    @{
+        var groupedCategories = GetGroupedCategories().ToList();
+    }
+
+    @if (groupedCategories.Count == 0)
+    {
+        <div class="timeline-node">
+            <p style="font-family: var(--font-mono); font-size: 0.84rem; color: var(--text-secondary);">
+                No technologies match the filter "@_searchQuery". Clear the search box to view all categories.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="arsenal-category-grid">
+            @foreach (var categoryGroup in groupedCategories)
+            {
+                <article class="arsenal-category-box">
+                    <header class="arsenal-cat-header">
+                        <h3 class="arsenal-cat-title">@categoryGroup.Key</h3>
+                        <span class="arsenal-cat-count">@categoryGroup.Value.Count items</span>
+                    </header>
+
+                    <div class="arsenal-skill-list">
+                        @foreach (var skill in categoryGroup.Value)
+                        {
+                            <div class="skill-chip status-@skill.Status"
+                                 title="@GetSkillTooltip(skill)">
+                                <span class="status-dot @GetDotClass(skill.Status)"></span>
+                                @if (!string.IsNullOrWhiteSpace(skill.OfficialDocUrl))
+                                {
+                                    <a href="@skill.OfficialDocUrl"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       style="display: inline-flex; align-items: center; gap: 0.3rem;">
+                                        <span>@skill.Name</span>
+                                        <span style="color: var(--text-muted); font-size: 0.68rem;">↗</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>@skill.Name</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    public enum ArsenalDisplayMode
+    {
+        CoreCompetencies,
+        CurrentlyExploring
+    }
+
+    [Parameter]
+    public ArsenalDisplayMode Mode { get; set; } = ArsenalDisplayMode.CoreCompetencies;
+
+    private SkillStatus? _selectedStatusFilter;
+    private string _searchQuery = string.Empty;
+
+    private void SetStatusFilter(SkillStatus? status)
+    {
+        _selectedStatusFilter = status;
+    }
+
+    private IEnumerable<SkillItem> GetBaseModeSkills()
+    {
+        // Never expose Planned skills as existing competencies
+        return Mode == ArsenalDisplayMode.CoreCompetencies
+            ? PortfolioData.Skills.Where(s => s.Status is SkillStatus.WorkingWith or SkillStatus.FamiliarWith)
+            : PortfolioData.Skills.Where(s => s.Status is SkillStatus.CurrentlyLearning or SkillStatus.Exploring);
+    }
+
+    private IEnumerable<SkillItem> GetFilteredSkills(SkillStatus? statusOverride)
+    {
+        var query = GetBaseModeSkills();
+
+        if (statusOverride.HasValue)
+        {
+            query = query.Where(s => s.Status == statusOverride.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            var term = _searchQuery.Trim();
+            query = query.Where(s =>
+                s.Name.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                s.Category.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (s.Description?.Contains(term, StringComparison.OrdinalIgnoreCase) ?? false));
+        }
+
+        return query.OrderBy(s => s.DisplayOrder).ThenBy(s => s.Name);
+    }
+
+    private int CountByStatus(SkillStatus status) =>
+        GetBaseModeSkills().Count(s => s.Status == status);
+
+    private IDictionary<string, List<SkillItem>> GetGroupedCategories()
+    {
+        return GetFilteredSkills(_selectedStatusFilter)
+            .GroupBy(s => s.Category)
+            .OrderBy(g => g.Key)
+            .ToDictionary(g => g.Key, g => g.ToList());
+    }
+
+    private static string GetDotClass(SkillStatus status) => status switch
+    {
+        SkillStatus.WorkingWith => "dot-working",
+        SkillStatus.FamiliarWith => "dot-familiar",
+        SkillStatus.CurrentlyLearning => "dot-learning",
+        SkillStatus.Exploring => "dot-exploring",
+        _ => ""
+    };
+
+    private static string FormatStatusLabel(SkillStatus status) => status switch
+    {
+        SkillStatus.WorkingWith => "Working With",
+        SkillStatus.FamiliarWith => "Familiar With",
+        SkillStatus.CurrentlyLearning => "Currently Learning",
+        SkillStatus.Exploring => "Exploring",
+        SkillStatus.Planned => "Planned",
+        _ => status.ToString()
+    };
+
+    private static string GetSkillTooltip(SkillItem skill)
+    {
+        var statusText = $"Status: {FormatStatusLabel(skill.Status)}";
+        return string.IsNullOrWhiteSpace(skill.Description)
+            ? statusText
+            : $"{statusText} — {skill.Description}";
+    }
+}

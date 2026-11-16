@@ -1,0 +1,26 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>404 — Route Not Found | HIMEL</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <section class="section-block">
+                <div class="container-frame">
+                    <div class="timeline-node" style="max-width: 640px; margin: 2rem auto;">
+                        <div class="section-index-tag">ERR_404 // UNMAPPED_ROUTE</div>
+                        <h1 class="section-title">Requested route does not exist in this system.</h1>
+                        <p class="section-subtitle" style="margin-bottom: 1.75rem;">
+                            The URL you navigated to is either moved or not part of HIMEL's portfolio architecture.
+                        </p>
+                        <div class="hero-cta-row">
+                            <a href="/" class="btn btn-primary">Return to Homepage</a>
+                            <a href="/projects" class="btn btn-secondary">Explore Projects</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </LayoutView>
+    </NotFound>
+</Router>

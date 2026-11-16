@@ -1,0 +1,66 @@
+﻿<footer class="site-footer" role="contentinfo">
+    <div class="container-frame">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; padding-bottom: 2.25rem; border-bottom: 1px solid var(--border-grid);">
+            <!-- Column 1: Core Identity -->
+            <div>
+                <div class="brand-mark" style="margin-bottom: 0.65rem;">
+                    <span>@PortfolioData.BrandLogoText<span class="accent-dot">.</span></span>
+                </div>
+                <p style="color: var(--text-primary); font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.35rem;">
+                    @PortfolioData.PrimaryIdentity
+                </p>
+                <p style="color: var(--accent-pcbhai); font-size: 0.78rem; line-height: 1.6;">
+                    @PortfolioData.CP · @PortfolioData.TCC · @PortfolioData.AI
+                </p>
+                <p style="color: var(--text-muted); font-size: 0.78rem; line-height: 1.6;">
+                    @PortfolioData.FullName · @PortfolioData.UniversityShort · @PortfolioData.Location
+                </p>
+            </div>
+
+            <!-- Column 2: Architectural Directory -->
+            <div>
+                <div style="color: var(--text-primary); font-weight: 600; margin-bottom: 0.75rem; letter-spacing: 0.05em;">
+                    DIRECTORY
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+                    <a href="/">/ — Homepage</a>
+                    <a href="/projects">/projects — Engineering Case Studies</a>
+                    <a href="/pcbhai" style="color: var(--accent-pcbhai);">/pcbhai — pcBhai Hardware Brand</a>
+                    <a href="/blog">/blog — Technical Notes &amp; Articles</a>
+                    <a href="/resume">/resume — Curriculum Vitae</a>
+                </div>
+            </div>
+
+            <!-- Column 3: Profiles & CLI -->
+            <div>
+                <div style="color: var(--text-primary); font-weight: 600; margin-bottom: 0.75rem; letter-spacing: 0.05em;">
+                    NETWORK &amp; CLI
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem;">
+                    <a href="@PortfolioData.FacebookPersonalUrl" target="_blank" rel="noopener noreferrer">Facebook Personal ↗</a>
+                    <a href="@PortfolioData.LinkedInUrl" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+                    <a href="@PortfolioData.YouTubeChannelUrl" target="_blank" rel="noopener noreferrer">YouTube (pcBhai) ↗</a>
+                    <a href="@PortfolioData.GitHubUrl" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                    <a href="mailto:@PortfolioData.EmailAddress">@PortfolioData.EmailAddress</a>
+                </div>
+                <button type="button" class="cmd-trigger-btn" @onclick="() => OnOpenTerminal.InvokeAsync()">
+                    <span style="color: var(--accent-primary);">&gt;_</span> Launch Interactive CLI
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.5rem; color: var(--text-muted); font-size: 0.74rem;">
+            <div>
+                © @DateTime.UtcNow.Year @PortfolioData.FullName. Made with ❤️, C# & Blazor WebAssembly.
+            </div>
+            <div>
+                ENGINEERED BY ME // ASSISTED BY GEMINI ARGON & CHATGPT
+            </div>
+        </div>
+    </div>
+</footer>
+
+@code {
+    [Parameter]
+    public EventCallback OnOpenTerminal { get; set; }
+}

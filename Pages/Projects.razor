@@ -1,0 +1,159 @@
+﻿@page "/projects"
+@inject IJSRuntime JS
+
+<PageTitle>Projects — HIMEL | Software Engineer | .NET | AI</PageTitle>
+
+<section class="section-block" aria-labelledby="projects-page-title">
+    <div class="container-frame">
+        <!-- Page Header -->
+
+        <div style="max-width: 780px; margin-bottom: 2.75rem;">
+            <div class="section-index-tag">ENGINEERING // PROJECT ARCHIVE</div>
+            <h1 id="projects-page-title" class="section-title" style="font-size: clamp(2.1rem, 4vw, 3.1rem);">
+                Building Ideas Into Systems.
+            </h1>
+            <p class="section-subtitle" style="font-size: 1.04rem;">
+                A collection of software engineering projects, from backend-focused applications to full-stack systems. Explore the ideas, problems, architecture, technical decisions, and lessons behind each project.
+            </p>
+        </div>
+
+        <!-- Interactive Filter & Search Bar -->
+        <div class="arsenal-toolbar" style="margin-bottom: 2rem;">
+            <!-- Status Filter Buttons -->
+            <div class="status-legend" role="group" aria-label="Filter projects by development status">
+                <button type="button"
+                        class="legend-item @(_selectedStatus is null ? "active" : "")"
+                        @onclick="() => SetStatus(null)">
+                    <span>All Statuses (@PortfolioData.Projects.Count)</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatus == ProjectStatus.Completed ? "active" : "")"
+                        @onclick="() => SetStatus(ProjectStatus.Completed)">
+                    <span class="status-dot dot-working"></span>
+                    <span>Completed (@CountByStatus(ProjectStatus.Completed))</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatus == ProjectStatus.InProgress ? "active" : "")"
+                        @onclick="() => SetStatus(ProjectStatus.InProgress)">
+                    <span class="status-dot dot-learning"></span>
+                    <span>In Progress (@CountByStatus(ProjectStatus.InProgress))</span>
+                </button>
+                <button type="button"
+                        class="legend-item @(_selectedStatus == ProjectStatus.Planned ? "active" : "")"
+                        @onclick="() => SetStatus(ProjectStatus.Planned)">
+                    <span class="status-dot dot-exploring"></span>
+                    <span>Planned (@CountByStatus(ProjectStatus.Planned))</span>
+                </button>
+            </div>
+
+            <!-- Technology & Search Controls -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;">
+                <select @bind="_selectedTech"
+                        aria-label="Filter projects by technology"
+                        style="background: var(--bg-obsidian); border: 1px solid var(--border-grid); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.76rem; padding: 0.45rem 0.75rem;">
+                    <option value="">All Technologies</option>
+                    @foreach (var tech in GetAllTechnologies())
+                    {
+                        <option value="@tech">@tech</option>
+                    }
+                </select>
+
+                <input type="search"
+                       placeholder="Search project title or problem..."
+                       @bind="_searchTerm"
+                       @bind:event="oninput"
+                       aria-label="Search projects"
+                       style="background: var(--bg-obsidian); border: 1px solid var(--border-grid); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.76rem; padding: 0.45rem 0.75rem; min-width: 240px;" />
+            </div>
+        </div>
+
+        <!-- Filtered Project List -->
+        @{
+            var filteredProjects = GetFilteredProjects().ToList();
+        }
+
+        @if (filteredProjects.Count == 0)
+        {
+            <div class="timeline-node">
+                <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    No projects match the current filter combination.
+                </p>
+                <button type="button" class="btn btn-secondary" @onclick="ResetFilters">
+                    Reset All Filters
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="projects-stack">
+                @{
+                    var idx = 1;
+                }
+                @foreach (var project in filteredProjects)
+                {
+                    <ProjectShowcaseCard Project="project" IndexNumber="idx" />
+                    idx++;
+                }
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    private ProjectStatus? _selectedStatus;
+    private string _selectedTech = string.Empty;
+    private string _searchTerm = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToTop");
+        }
+    }
+
+    private void SetStatus(ProjectStatus? status) => _selectedStatus = status;
+
+    private void ResetFilters()
+    {
+        _selectedStatus = null;
+        _selectedTech = string.Empty;
+        _searchTerm = string.Empty;
+    }
+
+    private int CountByStatus(ProjectStatus status) =>
+        PortfolioData.Projects.Count(p => p.Status == status);
+
+    private IEnumerable<string> GetAllTechnologies() =>
+        PortfolioData.Projects
+            .SelectMany(p => p.TechStack)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(t => t);
+
+    private IEnumerable<ProjectItem> GetFilteredProjects()
+    {
+        var query = PortfolioData.Projects.AsEnumerable();
+
+        if (_selectedStatus.HasValue)
+        {
+            query = query.Where(p => p.Status == _selectedStatus.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(_selectedTech))
+        {
+            query = query.Where(p => p.TechStack.Contains(_selectedTech, StringComparer.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(_searchTerm))
+        {
+            var term = _searchTerm.Trim();
+            query = query.Where(p =>
+                p.Title.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                p.Tagline.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                p.ShortDescription.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                p.ProblemStatement.Contains(term, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return query;
+    }
+}

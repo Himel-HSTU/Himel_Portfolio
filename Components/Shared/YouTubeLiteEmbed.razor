@@ -1,0 +1,117 @@
+﻿<article style="border: 1px solid var(--border-grid); background: var(--bg-slate); display: flex; flex-direction: column; justify-content: space-between;">
+    <div>
+        @if (_isPlayerLoaded && IsRealYouTubeId(Video.YouTubeVideoId))
+        {
+            <div class="yt-preview-box">
+                <iframe width="100%"
+                        height="100%"
+                        src="https://www.youtube-nocookie.com/embed/@(Video.YouTubeVideoId)?autoplay=1&rel=0"
+                        title="@Video.Title"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                </iframe>
+            </div>
+        }
+        else
+        {
+            <div class="yt-preview-box" @onclick="ActivatePlayer" role="button" tabindex="0" aria-label="Load video @Video.Title">
+                @if (IsRealYouTubeId(Video.YouTubeVideoId))
+                {
+                    <img src="https://i.ytimg.com/vi/@(Video.YouTubeVideoId)/hqdefault.jpg"
+                         alt="@Video.Title thumbnail"
+                         loading="lazy"
+                         style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.88; transition: opacity 200ms ease;" />
+                }
+                else
+                {
+                    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 1rem; background: radial-gradient(circle at center, rgba(242,153,74,0.12), var(--bg-obsidian));">
+                        <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-pcbhai);">
+                            <span>pcBhai // @Video.Category</span>
+                            <span>@Video.DurationDisplay</span>
+                        </div>
+                        <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-align: center;">
+                            [Video ID Placeholder: @Video.YouTubeVideoId]
+                        </div>
+                    </div>
+                }
+
+                <!-- Transparent Minimal Play Button with Crisp Border -->
+                <button type="button"
+                        class="yt-play-trigger"
+                        style="background: rgba(10, 12, 16, 0.38); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.82); padding: 0.42rem 0.9rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);">
+                    ▶ @(IsRealYouTubeId(Video.YouTubeVideoId) ? "Play Video" : "Configure Video ID / Open Channel")
+                </button>
+            </div>
+        }
+
+        <div style="padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-pcbhai); margin-bottom: 0.45rem;">
+                <span>@Video.Category</span>
+                <span>@Video.DurationDisplay</span>
+            </div>
+
+            <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.35;">
+                @Video.Title
+            </h3>
+
+            <!-- 2-Line Clamped Summary + See More / See Less Toggle -->
+            <div>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.3rem; @(_isSummaryExpanded ? "" : "display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.75rem;")">
+                    @Video.Summary
+                </p>
+
+                @if (!string.IsNullOrWhiteSpace(Video.Summary) && Video.Summary.Length > 85)
+                {
+                    <button type="button"
+                            @onclick="ToggleSummary"
+                            style="background: transparent; border: none; padding: 0; font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-pcbhai); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;">
+                        @(_isSummaryExpanded ? "See Less ↑" : "See More ↓")
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (_showPlaceholderHint)
+    {
+        <div style="margin: 0 1.25rem 1.25rem; padding: 0.65rem 0.85rem; border: 1px dashed var(--accent-pcbhai); background: rgba(242,153,74,0.08); font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-primary);">
+            Replace <code>@Video.YouTubeVideoId</code> in <code>Data/PortfolioData.cs</code> with your real 11-character YouTube Video ID, or
+            <a href="@PortfolioData.YouTubeChannelUrl" target="_blank" rel="noopener noreferrer" style="color: var(--accent-pcbhai); text-decoration: underline;">visit the pcBhai YouTube Channel ↗</a>.
+        </div>
+    }
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public PcBhaiVideoItem Video { get; set; } = default!;
+
+    private bool _isPlayerLoaded;
+    private bool _showPlaceholderHint;
+    private bool _isSummaryExpanded;
+
+    private void ActivatePlayer()
+    {
+        if (IsRealYouTubeId(Video.YouTubeVideoId))
+        {
+            _isPlayerLoaded = true;
+        }
+        else
+        {
+            _showPlaceholderHint = !_showPlaceholderHint;
+        }
+    }
+
+    private void ToggleSummary()
+    {
+        _isSummaryExpanded = !_isSummaryExpanded;
+    }
+
+    private static bool IsRealYouTubeId(string? id)
+    {
+        if (string.IsNullOrWhiteSpace(id)) return false;
+        if (id.StartsWith("REPLACE_", StringComparison.OrdinalIgnoreCase)) return false;
+        return id.Trim().Length == 11;
+    }
+}

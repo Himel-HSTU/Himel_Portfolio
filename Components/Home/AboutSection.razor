@@ -1,0 +1,65 @@
+﻿<section id="about" class="section-block" aria-labelledby="about-heading">
+    <div class="container-frame">
+        <div class="section-grid-split">
+            <!-- Left Rail: Header (without Subtitle) + Architectural Portrait Frame -->
+            <SectionHeader DomainTag="IDENTITY // PROFILE"
+                           Title="About Me.">
+                <figure class="profile-portrait-frame">
+                    <!-- 4-Side Corner Accents -->
+                    <span class="portrait-corner tl" aria-hidden="true"></span>
+                    <span class="portrait-corner tr" aria-hidden="true"></span>
+                    <span class="portrait-corner bl" aria-hidden="true"></span>
+                    <span class="portrait-corner br" aria-hidden="true"></span>
+
+                    <!-- Portrait Image Viewport -->
+                    <div class="profile-portrait-viewport">
+                        <img src="@PortfolioData.ProfileImagePath"
+                             alt="@PortfolioData.FullName — Software Engineer"
+                             class="profile-portrait-img" style="crop"
+                             loading="lazy" />
+                    </div>
+
+                    <!-- Technical Frame Footer -->
+                    <figcaption class="profile-portrait-caption" style="justify-content: center; text-align: center;">
+                        <span style="color: var(--accent-primary);">THINKER · BUILDER · EXPLORER</span>
+                    </figcaption>
+                </figure>
+            </SectionHeader>
+
+            <!-- Right Content Canvas -->
+            <div>
+                <div class="editorial-prose">
+                    @foreach (var paragraph in PortfolioData.AboutParagraphs)
+                    {
+                        <p>@paragraph</p>
+                    }
+                </div>
+
+                <!-- Architectural Specification Matrix -->
+                <div class="spec-matrix" role="list" aria-label="Core Profile Specifications">
+                    <div class="spec-cell" role="listitem">
+                        <div class="spec-cell-label">PROFESSIONAL IDENTITY</div>
+                        <div class="spec-cell-val">Software Engineer</div>
+                    </div>
+                    <div class="spec-cell" role="listitem">
+                        <div class="spec-cell-label">PRIMARY ECOSYSTEM</div>
+                        <div class="spec-cell-val">C# · .NET · ASP.NET Core</div>
+                    </div>
+                    <div class="spec-cell" role="listitem">
+                        <div class="spec-cell-label">EMERGING FOCUS</div>
+                        <div class="spec-cell-val">AI · LLMs · RAG Systems</div>
+                    </div>
+                    <div class="spec-cell" role="listitem">
+                        <div class="spec-cell-label">TECH CONTENT CREATOR &amp; COMMUNITY</div>
+                        <div class="spec-cell-val" style="color: var(--accent-pcbhai);">Founder @("@")pcBhai</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    // Replace this path with your exact image filename inside wwwroot/images/
+    private const string _profileImagePath = "images/himel-profile.jpg";
+}

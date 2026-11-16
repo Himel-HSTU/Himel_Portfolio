@@ -1,0 +1,96 @@
+﻿@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<header class="site-header" role="banner">
+    <div class="nav-inner">
+        <!-- Brand Identity -->
+        <a href="/" class="brand-mark" aria-label="HIMEL Home">
+            <span>@PortfolioData.BrandLogoText<span class="accent-dot">.</span></span>
+            <span class="brand-role-pill">SOFTWARE ENGINEER</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="nav-links" aria-label="Primary Navigation">
+            <NavLink class="nav-link-item" href="" Match="NavLinkMatch.All">Home</NavLink>
+            <NavLink class="nav-link-item" href="projects">Projects</NavLink>
+            <NavLink class="nav-link-item nav-link-pcbhai" href="pcbhai">pcBhai</NavLink>
+            <NavLink class="nav-link-item" href="blog">Blog</NavLink>
+            <NavLink class="nav-link-item" href="resume">Resume</NavLink>
+            <button type="button" class="nav-link-item" style="background:transparent; cursor:pointer;" @onclick="NavigateToContactAsync">
+                Contact
+            </button>
+        </nav>
+
+        <!-- Interactive Actions (Command Terminal & Mobile Drawer Toggle) -->
+        <div class="nav-actions">
+            <button type="button"
+                    class="cmd-trigger-btn"
+                    @onclick="TriggerTerminalAsync"
+                    title="Open Interactive Command Terminal (Ctrl+K)"
+                    aria-label="Open Interactive Command Terminal">
+                <span style="color: var(--accent-primary); font-weight: 600;">&gt;_</span>
+                <span>Terminal</span>
+                <kbd class="cmd-kbd">Ctrl+K</kbd>
+            </button>
+
+            <button type="button"
+                    class="mobile-menu-btn"
+                    @onclick="ToggleMobileMenu"
+                    aria-expanded="@_mobileMenuOpen"
+                    aria-label="Toggle navigation menu">
+                @(_mobileMenuOpen ? "✕" : "☰")
+            </button>
+        </div>
+    </div>
+
+    <!-- Responsive Mobile Drawer -->
+    @if (_mobileMenuOpen)
+    {
+        <nav class="mobile-drawer" aria-label="Mobile Navigation">
+            <NavLink class="nav-link-item" href="" Match="NavLinkMatch.All" @onclick="CloseMobileMenu">Home</NavLink>
+            <NavLink class="nav-link-item" href="projects" @onclick="CloseMobileMenu">Projects</NavLink>
+            <NavLink class="nav-link-item nav-link-pcbhai" href="pcbhai" @onclick="CloseMobileMenu">pcBhai</NavLink>
+            <NavLink class="nav-link-item" href="blog" @onclick="CloseMobileMenu">Blog</NavLink>
+            <NavLink class="nav-link-item" href="resume" @onclick="CloseMobileMenu">Resume</NavLink>
+            <button type="button"
+                    class="nav-link-item"
+                    style="background:transparent; text-align:left; cursor:pointer;"
+                    @onclick="NavigateToContactAsync">
+                Contact
+            </button>
+        </nav>
+    }
+</header>
+
+@code {
+    [Parameter]
+    public EventCallback OnOpenTerminal { get; set; }
+
+    private bool _mobileMenuOpen;
+
+    private void ToggleMobileMenu() => _mobileMenuOpen = !_mobileMenuOpen;
+
+    private void CloseMobileMenu() => _mobileMenuOpen = false;
+
+    private async Task TriggerTerminalAsync()
+    {
+        _mobileMenuOpen = false;
+        await OnOpenTerminal.InvokeAsync();
+    }
+
+    private async Task NavigateToContactAsync()
+    {
+        _mobileMenuOpen = false;
+        var currentUri = new Uri(Nav.Uri);
+        if (currentUri.AbsolutePath == "/" || string.IsNullOrEmpty(currentUri.AbsolutePath.Trim('/')))
+        {
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToElement", "contact");
+        }
+        else
+        {
+            Nav.NavigateTo("/#contact");
+            await Task.Delay(120);
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToElement", "contact");
+        }
+    }
+}

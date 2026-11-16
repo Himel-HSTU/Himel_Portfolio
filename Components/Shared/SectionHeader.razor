@@ -1,0 +1,38 @@
+﻿<div class="section-rail">
+    @if (!string.IsNullOrWhiteSpace(DomainTag))
+    {
+        <div class="section-index-tag">@DomainTag</div>
+    }
+    <h2 class="section-title">@Title</h2>
+    @if (SubtitleContent is not null)
+    {
+        <p class="section-subtitle">@SubtitleContent</p>
+    }
+    else if (!string.IsNullOrWhiteSpace(Subtitle))
+    {
+        <p class="section-subtitle">@Subtitle</p>
+    }
+    @if (ChildContent is not null)
+    {
+        <div style="margin-top: 1.5rem;">
+            @ChildContent
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? DomainTag { get; set; }
+
+    [Parameter]
+    public string? Subtitle { get; set; }
+
+    [Parameter]
+    public RenderFragment? SubtitleContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

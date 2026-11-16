@@ -1,0 +1,97 @@
+﻿@page "/blog"
+@inject IJSRuntime JS
+
+<PageTitle>Blog &amp; Engineering Notes — HIMEL</PageTitle>
+
+<section class="section-block">
+    <div class="container-frame">
+        <div style="max-width: 760px; margin-bottom: 2.5rem;">
+            <div class="section-index-tag">WRITING // ENGINEERING &amp; INSIGHTS</div>
+            <h1 class="section-title" style="font-size: clamp(2.1rem, 4vw, 3.1rem);">
+                Notes From My Journey.
+            </h1>
+            <p class="section-subtitle" style="font-size: 1.02rem;">
+                A collection of technical explorations, lessons learned, and personal experiences across software engineering, .NET, competitive programming, and the evolving world of AI.
+            </p>
+        </div>
+
+        <!-- Category Filter Toolbar -->
+        <div class="arsenal-toolbar" style="margin-bottom: 2rem;">
+            <div class="status-legend">
+                <button type="button"
+                        class="legend-item @(_selectedCategory is null ? "active" : "")"
+                        @onclick="() => _selectedCategory = null">
+                    <span>All Notes (@PortfolioData.BlogArticles.Count)</span>
+                </button>
+                @foreach (var cat in GetCategories())
+                {
+                    <button type="button"
+                            class="legend-item @(_selectedCategory == cat ? "active" : "")"
+                            @onclick="() => _selectedCategory = cat">
+                        <span>@cat</span>
+                    </button>
+                }
+            </div>
+        </div>
+
+        <!-- Article List -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            @foreach (var post in GetFilteredPosts())
+            {
+                <article class="timeline-node">
+                    <div class="timeline-meta-row">
+                        <span>@post.Category · @post.PublishedDate · @post.ReadingTime</span>
+                        @if (post.IsDraftPlaceholder)
+                        {
+                            <span style="color: var(--accent-pcbhai); border: 1px dashed var(--accent-pcbhai); padding: 0.1rem 0.5rem;">
+                                DRAFT TEMPLATE
+                            </span>
+                        }
+                    </div>
+
+                    <h2 class="timeline-heading" style="font-size: 1.5rem; margin-bottom: 0.6rem;">
+                        <a href="/blog/@post.Slug">@post.Title</a>
+                    </h2>
+
+                    <p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.7; max-width: 72ch; margin-bottom: 1.25rem;">
+                        @post.Excerpt
+                    </p>
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                        <div class="tag-cluster" style="margin-top: 0;">
+                            @foreach (var tag in post.Tags)
+                            {
+                                <span class="tech-tag">#@tag</span>
+                            }
+                        </div>
+
+                        <a href="/blog/@post.Slug" class="btn btn-secondary" style="background-color: var(--accent-pcbhai); color:black">
+                            <span>Read Full</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    private string? _selectedCategory;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToTop");
+        }
+    }
+
+    private IEnumerable<string> GetCategories() =>
+        PortfolioData.BlogArticles.Select(b => b.Category).Distinct();
+
+    private IEnumerable<BlogArticleItem> GetFilteredPosts() =>
+        string.IsNullOrWhiteSpace(_selectedCategory)
+            ? PortfolioData.BlogArticles
+            : PortfolioData.BlogArticles.Where(b => b.Category == _selectedCategory);
+}

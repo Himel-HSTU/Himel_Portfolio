@@ -1,0 +1,109 @@
+﻿<section id="education" class="section-block" aria-labelledby="education-heading">
+    <div class="container-frame">
+        <div class="section-grid-split">
+            <!-- Left Rail -->
+            <SectionHeader DomainTag="ACADEMIC // CHRONOLOGY"
+                           Title="Education.">
+                <SubtitleContent>
+                    The childhood dream was engineering. Nobody warned me about the academic pressure and semester exams, though.
+                    <span style="color: var(--text-primary); font-weight: 500;">
+                        Engineering did teach me the art of
+                        <span style="color: var(--accent-primary); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;">Survival.</span>
+                    </span>
+                </SubtitleContent>
+            </SectionHeader>
+
+            <!-- Right Content Canvas -->
+            <div class="timeline-list">
+                @foreach (var edu in PortfolioData.EducationTimeline)
+                {
+                    var isUniversity = !string.IsNullOrWhiteSpace(edu.Faculty);
+                    var hasExtraSections = edu.RelevantCoursework.Count > 0 || edu.AcademicNotes.Count > 0;
+
+                    <article class="timeline-node">
+                        <div class="timeline-meta-row">
+                            <span>@edu.EnrollmentYear — @edu.ExpectedGraduationYear @(isUniversity ? "(Expected)" : "")</span>
+                            <span>@(isUniversity ? $"CURRENT STAGE: {edu.CurrentStageCode}" : edu.CurrentStageCode)</span>
+                        </div>
+
+                        <h3 class="timeline-heading">@edu.Institution</h3>
+                        <p class="timeline-sub">@edu.DegreeName</p>
+
+                        <!-- Key Academic Metadata Grid -->
+                        <div class="spec-matrix" style="margin-top: 1rem; margin-bottom: @(hasExtraSections ? "1.5rem" : "0");">
+                            @if (!string.IsNullOrWhiteSpace(edu.Faculty))
+                            {
+                                <div class="spec-cell">
+                                    <div class="spec-cell-label">FACULTY</div>
+                                    <div class="spec-cell-val" style="font-size: 0.92rem;">@edu.Faculty</div>
+                                </div>
+                            }
+
+                            <div class="spec-cell">
+                                <div class="spec-cell-label">@(isUniversity ? "DEPARTMENT" : "GROUP")</div>
+                                <div class="spec-cell-val" style="font-size: 0.92rem;">
+                                    @edu.Department
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(edu.CgpaDisplay))
+                            {
+                                <div class="spec-cell">
+                                    <div class="spec-cell-label">@(isUniversity ? "CGPA" : "RESULT")</div>
+                                    <div class="spec-cell-val" style="font-size: 0.92rem; color: var(--accent-primary);">@edu.CgpaDisplay</div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Relevant Undergraduate Coursework (Only rendered if list is not empty) -->
+                        @if (edu.RelevantCoursework.Count > 0)
+                        {
+                            <div style="margin-bottom: @(edu.AcademicNotes.Count > 0 ? "1.5rem" : "0");">
+                                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                    <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted);">
+                                        RELEVANT UNIVERSITY COURSEWORK :
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(PortfolioData.CurriculumPreviewUrl))
+                                    {
+                                        <a href="@PortfolioData.CurriculumPreviewUrl"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); text-decoration: underline; text-underline-offset: 3px;">
+                                            Preview Full Curriculum PDF ↗
+                                        </a>
+                                    }
+                                </div>
+
+                                <div class="tag-cluster" style="margin-top: 0;">
+                                    @foreach (var course in edu.RelevantCoursework)
+                                    {
+                                        <span class="tech-tag">@course</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Academic Highlights & Editable Notes (Only rendered if list is not empty) -->
+                        @if (edu.AcademicNotes.Count > 0)
+                        {
+                            <div>
+                                <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                                    ACADEMIC ACTIVITIES &amp; NOTES
+                                </div>
+                                <ul style="display: flex; flex-direction: column; gap: 0.45rem;">
+                                    @foreach (var note in edu.AcademicNotes)
+                                    {
+                                        <li style="font-size: 0.9rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: baseline;">
+                                            <span style="color: var(--accent-primary); font-family: var(--font-mono);">▪</span>
+                                            <span>@note</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </article>
+                }
+            </div>
+        </div>
+    </div>
+</section>

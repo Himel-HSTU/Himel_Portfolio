@@ -1,0 +1,258 @@
+﻿@page "/pcbhai"
+@inject IJSRuntime JS
+
+<PageTitle>pcBhai — Custom PC Building &amp; TECH CONTENT CREATOR | HIMEL</PageTitle>
+
+<!-- 01. pcBhai Brand Hero -->
+<section class="section-block" style="background: linear-gradient(180deg, rgba(242, 153, 74, 0.08) 0%, transparent 100%);">
+    <div class="container-frame">
+        <div class="pcbhai-banner-frame">
+            <span class="pcbhai-badge">HARDWARE &amp; TECH CONTENT CREATOR // BANGLADESH</span>
+            <h1 class="section-title" style="font-size: clamp(2.2rem, 4.8vw, 3.75rem); margin-bottom: 0.85rem;">
+                pcBhai<span style="color: var(--accent-pcbhai);">.</span>
+            </h1>
+            <p style="font-family: var(--font-display); font-size: clamp(1.15rem, 2.2vw, 1.5rem); color: var(--text-primary); margin-bottom: 1rem;">
+                @PortfolioData.PcBhaiTagline
+            </p>
+            <p style="font-size: 1.02rem; color: var(--text-secondary); max-width: 70ch; line-height: 1.75; margin-bottom: 2rem;">
+                @PortfolioData.PcBhaiStoryOverview
+            </p>
+
+            <!-- 11. YouTube Subscription & Community CTAs -->
+            <div class="hero-cta-row">
+                <a href="@PortfolioData.YouTubeChannelUrl"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn-primary"
+                   style="background: #FF0000; border: 1px solid #FF0000; color: #FFFFFF; font-weight: 600; display: inline-flex; align-items: center; gap: 0.55rem; box-shadow: 0 4px 14px rgba(255, 0, 0, 0.25);">
+                    <svg width="18" height="13" viewBox="0 0 24 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink: 0;">
+                        <path d="M23.498 2.656a3.016 3.016 0 0 0-2.122-2.136C19.505 0 12 0 12 0S4.495 0 2.624.52A3.016 3.016 0 0 0 .502 2.656C0 4.539 0 8.47 0 8.47s0 3.931.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.52 9.376.52 9.376.52s7.505 0 9.376-.52a3.016 3.016 0 0 0 2.122-2.136C24 12.401 24 8.47 24 8.47s0-3.931-.502-5.814zM9.545 12.098V4.842L15.818 8.47l-6.273 3.628z" fill="#FFFFFF" />
+                    </svg>
+                    <span>Explore on YouTube</span>
+                    <span>↗</span>
+                </a>
+                <a href="@PortfolioData.FacebookPageUrl"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn-secondary">
+                    <span>pcBhai Facebook Page</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 03. Verified YouTube & PC Building Statistics -->
+        <div class="spec-matrix" style="margin-top: 2rem;">
+            <div class="spec-cell">
+                <div class="spec-cell-label">YOUTUBE COMMUNITY</div>
+                <div class="spec-cell-val" style="font-size: 1.35rem; color: var(--accent-pcbhai);">@PortfolioData.PcBhaiSubscribersStat Subscribers</div>
+            </div>
+            <div class="spec-cell">
+                <div class="spec-cell-label">PUBLISHED VIDEO LIBRARY</div>
+                <div class="spec-cell-val" style="font-size: 1.35rem;">@PortfolioData.PcBhaiVideosStat Tech Videos</div>
+            </div>
+            <div class="spec-cell">
+                <div class="spec-cell-label">CUSTOM DESKTOP SYSTEMS</div>
+                <div class="spec-cell-val" style="font-size: 1.35rem;">@PortfolioData.PcBhaiBuildsDeliveredStat PCs Built &amp; Sold</div>
+            </div>
+            <div class="spec-cell">
+                <div class="spec-cell-label">COMMUNITY DISCUSSION GROUP</div>
+                <div class="spec-cell-val" style="font-size: 1rem;">@PortfolioData.FacebookGroupName</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 02 & 09. Origin Story & Real-World PC Building Experience Across Bangladesh -->
+
+<section class="section-block">
+    <div class="container-frame">
+        <div class="section-grid-split">
+            <SectionHeader DomainTag="pcBhai // TECH CONTENT"
+                           Title="From PC Builds to Tech Content."
+                           Subtitle="A tech-focused venture built around custom PC solutions, hardware education, and helping people make smarter technology decisions across Bangladesh." />
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+
+                <article class="timeline-node">
+                    <div class="section-index-tag" style="color: var(--accent-pcbhai);">
+                        01 // THE STORY & PURPOSE
+                    </div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.6rem;">
+                        Why pcBhai Exists
+                    </h3>
+                    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+                        Built around a passion for PC hardware and technology, pcBhai aims to make PC building more accessible for everyone. From helping first-time buyers understand their options to sharing practical hardware knowledge, the goal is to make technology easier to explore and smarter to invest in.
+                    </p>
+                </article>
+
+                <article class="timeline-node">
+                    <div class="section-index-tag" style="color: var(--accent-pcbhai);">
+                        02 // CUSTOM PC SOLUTIONS
+                    </div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.6rem;">
+                        Custom Builds Across Bangladesh
+                    </h3>
+                    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+                        Helping customers build PCs around their budgets, workloads, and preferences. From component selection and compatibility checks to sourcing, assembly, and delivery, pcBhai serves PC buyers across different cities in Bangladesh.
+                    </p>
+                </article>
+
+                <article class="timeline-node">
+                    <div class="section-index-tag" style="color: var(--accent-pcbhai);">
+                        03 // CONTENT & HARDWARE EDUCATION
+                    </div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.6rem;">
+                        Sharing the Knowledge
+                    </h3>
+                    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+                        Creating Bengali tech content covering custom PC build guides, component reviews, hardware comparisons, buying guides, upgrade recommendations, troubleshooting, and practical tips for getting the most out of a PC.
+                    </p>
+                </article>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- 04, 05, 06, 07. Configurable Video Collections (Click-to-Load YouTube Engine) -->
+<section class="section-block">
+    <div class="container-frame">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem;">
+
+            <div>
+                <div class="section-index-tag" style="color: var(--accent-pcbhai);">pcBhai // VIDEO COLLECTION</div>
+                <h2 class="section-title" style="margin-bottom: 0.45rem;">PC Builds, Reviews &amp; Tech Guides.</h2>
+                <p class="section-subtitle">
+                    Explore practical PC building guides, component reviews, hardware comparisons, buying advice, and troubleshooting videos—all created to help you make better decisions about your next PC.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Video Category Filter Tabs -->
+        <div class="arsenal-toolbar" style="margin-bottom: 2rem;">
+            <div class="status-legend">
+                @foreach (var category in _videoCategories)
+                {
+                    <button type="button"
+                            class="legend-item @(_selectedCategory == category ? "active" : "")"
+                            @onclick="() => _selectedCategory = category">
+                        <span>@category</span>
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.5rem;">
+            @foreach (var video in GetFilteredVideos())
+            {
+                <YouTubeLiteEmbed Video="video" />
+            }
+        </div>
+    </div>
+</section>
+
+<!-- 08. PC Builds Gallery 
+<section class="section-block">
+    <div class="container-frame">
+        <div class="section-grid-split">
+            <SectionHeader DomainTag="GALLERY // SYSTEMS BUILT"
+                           Title="Custom PC Builds Gallery."
+                           Subtitle="Representative desktop build profiles assembled, tested, and delivered through pcBhai." />
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                @foreach (var build in PortfolioData.PcBuildsGallery)
+                {
+                    <article class="timeline-node">
+                        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-pcbhai); margin-bottom: 0.45rem;">
+                            @build.TierCategory
+                        </div>
+                        <h3 style="font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">
+                            @build.BuildTitle
+                        </h3>
+                        <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+                            @build.ProcessorAndGpu
+                        </p>
+                        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+                            @build.PurposeSummary
+                        </p>
+                        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--border-grid); padding-top: 0.65rem;">
+                            STATUS // @build.LocationDelivered
+                        </div>
+                    </article>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+<!-- 10. Facebook Page & Community Hub -->
+<section class="section-block" style="border-bottom: none;">
+    <div class="container-frame">
+        <div class="timeline-node" style="padding: 2.5rem; border-color: rgba(242, 153, 74, 0.4);">
+            <div class="section-index-tag" style="color: var(--accent-pcbhai);">COMMUNITY // pcBhai YT | PAGE &amp; GROUP</div>
+            <h2 class="section-title" style="margin-bottom: 0.65rem;">
+                Join the pcBhai Community.
+            </h2>
+            <p style="font-size: 1rem; color: var(--text-secondary); max-width: 66ch; line-height: 1.7; margin-bottom: 1.75rem;">
+                Explore PC building guides, component reviews, hardware comparisons, buying advice, and troubleshooting videos.
+                Connect with fellow PC builders, ask component compatibility questions, and get troubleshooting help in the <strong style="color: var(--text-primary);">@PortfolioData.FacebookGroupName</strong> community and official Facebook page.
+            </p>
+            <div class="hero-cta-row">
+
+                <a href="@PortfolioData.YouTubeChannelUrl"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn"
+                   style="background: #FF0000; border: 1px solid #FF0000; color: #FFFFFF; font-weight: 600; display: inline-flex; align-items: center; gap: 0.55rem; box-shadow: 0 4px 14px rgba(255, 0, 0, 0.25);">
+                    <svg width="18" height="13" viewBox="0 0 24 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink: 0;">
+                        <path d="M23.498 2.656a3.016 3.016 0 0 0-2.122-2.136C19.505 0 12 0 12 0S4.495 0 2.624.52A3.016 3.016 0 0 0 .502 2.656C0 4.539 0 8.47 0 8.47s0 3.931.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.52 9.376.52 9.376.52s7.505 0 9.376-.52a3.016 3.016 0 0 0 2.122-2.136C24 12.401 24 8.47 24 8.47s0-3.931-.502-5.814zM9.545 12.098V4.842L15.818 8.47l-6.273 3.628z" fill="#FFFFFF" />
+                    </svg>
+                    <span>Open pcBhai YouTube Channel</span>
+                    <span>↗</span>
+                </a>
+                <a href="@PortfolioData.FacebookPageUrl" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background: var(--accent-pcbhai); border-color: var(--accent-pcbhai);">
+                    <span>Visit pcBhai Facebook Page</span>
+                    <span>↗</span>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private readonly string[] _videoCategories =
+    [
+        "All",
+        "PC Build Guide",
+        "Monitors",
+        "Buying Guides",
+        "GPU / CPU",
+        "Tutorials"
+    ];
+
+    private string _selectedCategory = "All";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToTop");
+        }
+    }
+
+    private IEnumerable<PcBhaiVideoItem> GetFilteredVideos()
+    {
+        if (_selectedCategory == "All")
+        {
+            return PortfolioData.PcBhaiVideos;
+        }
+
+        return PortfolioData.PcBhaiVideos.Where(v =>
+            string.Equals(v.Category, _selectedCategory, StringComparison.OrdinalIgnoreCase));
+    }
+}

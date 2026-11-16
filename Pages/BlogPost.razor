@@ -1,0 +1,115 @@
+﻿@page "/blog/{Slug}"
+@inject IJSRuntime JS
+
+@if (_article is null)
+{
+    <PageTitle>Article Not Found — HIMEL</PageTitle>
+    <section class="section-block">
+        <div class="container-frame">
+            <div class="timeline-node">
+                <div class="section-index-tag">ERR_404 // ARTICLE_NOT_FOUND</div>
+                <h1 class="section-title">Requested article was not found.</h1>
+                <a href="/blog" class="btn btn-primary" style="margin-top: 1rem;">← Back to Blog</a>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <PageTitle>@_article.Title — HIMEL</PageTitle>
+
+    <article class="section-block">
+        <div class="container-frame">
+            <div style="margin-bottom: 2rem;">
+                <a href="/blog" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">
+                    ← BACK TO /BLOG
+                </a>
+            </div>
+
+            <header style="border-bottom: 1px solid var(--border-grid); padding-bottom: 2rem; margin-bottom: 2.75rem;">
+                <div class="section-index-tag">@_article.Category.ToUpperInvariant() // @_article.ReadingTime.ToUpperInvariant()</div>
+                <h1 class="section-title" style="font-size: clamp(1.85rem, 3.8vw, 2.85rem); max-width: 28ch;">
+                    @_article.Title
+                </h1>
+                <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-top: 0.75rem;">
+                    By @PortfolioData.FullName (@PortfolioData.PrimaryIdentity) · @_article.PublishedDate
+                </div>
+            </header>
+
+            <div class="section-grid-split">
+                <!-- Left Rail: Table of Contents -->
+                <aside class="section-rail">
+                    <div class="timeline-node" style="padding: 1.25rem;">
+                        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+                            TABLE OF CONTENTS
+                        </div>
+                        <ol style="display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            @for (var i = 0; i < _article.TableOfContents.Count; i++)
+                            {
+                                <li>
+                                    <span style="font-family: var(--font-mono); color: var(--text-muted); margin-right: 0.4rem;">0@(i + 1).</span>
+                                    <span>@_article.TableOfContents[i]</span>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                </aside>
+
+                <!-- Right Column: Editorial Prose & Code Sample -->
+                <div>
+                    @if (_article.IsDraftPlaceholder)
+                    {
+                        <div class="placeholder-callout" style="margin-bottom: 1.75rem;">
+                            [DRAFT PLACEHOLDER] This entry is clearly marked as a draft template in <code>Data/PortfolioData.cs</code>. Replace with your complete article text when ready to publish.
+                        </div>
+                    }
+
+                    <div class="editorial-prose">
+                        @foreach (var paragraph in _article.Paragraphs)
+                        {
+                            <p>@paragraph</p>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(_article.CodeSampleCSharp))
+                    {
+                        <div style="margin: 2rem 0; border: 1px solid var(--border-grid); background: var(--bg-obsidian);">
+                            <div style="padding: 0.55rem 1rem; border-bottom: 1px solid var(--border-grid); background: var(--bg-slate); font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary);">
+                                C# // ASP.NET CORE SNIPPET
+                            </div>
+                            <pre style="padding: 1.25rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6; color: var(--text-primary);"><code>@_article.CodeSampleCSharp</code></pre>
+                        </div>
+                    }
+
+                    <div class="tag-cluster" style="margin-top: 2rem;">
+                        @foreach (var tag in _article.Tags)
+                        {
+                            <span class="tech-tag">#@tag</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+}
+
+@code {
+    [Parameter]
+    public string? Slug { get; set; }
+
+    private BlogArticleItem? _article;
+
+    protected override void OnParametersSet()
+    {
+        _article = PortfolioData.BlogArticles.FirstOrDefault(b =>
+            string.Equals(b.Slug, Slug, StringComparison.OrdinalIgnoreCase));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("himelPortfolio.scrollToTop");
+        }
+    }
+}
