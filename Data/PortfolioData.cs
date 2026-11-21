@@ -969,80 +969,80 @@ new(
     ],
 
     CodeSampleCSharp: null
+),
+
+new(
+    Slug: "beyond-coding-my-journey-with-pcbhai",
+    Title: "Beyond Coding: Turning a Passion for Technology into Something Real",
+    Category: "Technology / Entrepreneurship / Personal Journey",
+    PublishedDate: "November 2026",
+    ReadingTime: "8 min read",
+    IsDraftPlaceholder: false,
+
+    Excerpt: "From a childhood fascination with computers and gadgets to building a tech-focused YouTube community and serving custom PC customers across Bangladesh. A personal journey of turning curiosity into something meaningful beyond the classroom.",
+
+    Tags:
+    [
+        "pcBhai",
+        "Technology",
+        "Custom PC Building",
+        "Tech Content Creation",
+        "Entrepreneurship",
+        "Personal Journey"
+    ],
+
+    TableOfContents:
+    [
+        "A Childhood Fascination with Technology",
+        "From a YouTube Hobby to a Community",
+        "Building Custom PCs Across Bangladesh",
+        "Lessons Beyond Hardware",
+        "Making Room for Long-Term Goals"
+    ],
+
+    Paragraphs:
+    [
+        "From a young age, I've always been fascinated by computers, electronic gadgets, and the technology behind them. That curiosity eventually led me to pursue Electronics and Communication Engineering at university. Alongside my academic journey, I've continued exploring technology, practicing Competitive Programming, and working toward my long-term goal of becoming a Software Engineer.",
+
+        "But my journey with technology has never been limited to programming or academics.",
+
+        "My growing interest in computers, laptops, and PC hardware inspired me to start a YouTube channel called pcBhai almost five years ago. What began as a hobby gradually turned into a platform where I could share knowledge about PC components, review hardware, discuss buying decisions, and suggest custom PC configurations for different budgets and requirements.",
+
+        "Over time, something that started as a personal interest grew into a small but genuine community of people who shared the same enthusiasm for technology. Seeing people engage with the content, ask questions, and trust my recommendations made the experience even more meaningful.",
+
+        "As the channel grew, I started receiving requests from people interested in building custom PCs. Eventually, I began helping customers select components, source hardware, assemble systems, and get their PCs delivered.",
+
+        "What makes this experience particularly special is that I've had the opportunity to serve customers across different cities in Bangladesh, including Dhaka, Chittagong, Cumilla, Sylhet, Rajshahi, Barishal, Bogura, Mymensingh, Rangpur, Faridpur, Dinajpur, and many others.",
+
+        "My approach has been to source components directly from official importers and trusted third-party shops, carefully select compatible hardware, personally assemble and test the systems, and coordinate delivery. I also provide after-sales support to help customers with their questions and technical issues.",
+
+        "Within the first 9–10 months of actively handling custom PC orders, I successfully processed more than 50 orders. Alhamdulillah. ✨ For me, this was more than just selling computer components. It was an opportunity to turn something I genuinely loved into a real-world experience.",
+
+        "Of course, it wasn't always easy. Building customer trust, managing orders, determining fair pricing, maintaining consistent quality, and handling logistics all came with their own challenges.",
+
+        "Perhaps the biggest challenge was convincing people to trust someone they had never met, especially when most of the business was handled remotely. Being based in Dinajpur rather than a major commercial hub made that trust-building process even more important.",
+
+        "I also had to learn how to communicate with people from different cities, understand their individual requirements, manage expectations, and handle situations where technical preferences and budgets didn't always align. These experiences taught me lessons that I probably wouldn't have learned from a classroom alone.",
+
+        "Beyond hardware knowledge, I gradually developed practical skills in customer communication, negotiation, organization, pricing, logistics, and problem-solving. Most importantly, I learned how much trust and communication matter when you're trying to build something of your own.",
+
+        "However, as much as I love this journey, I also understand that I cannot give it the same amount of attention forever. My long-term goal has always been to build a career in the Software Engineering and IT industry. With university studies, Competitive Programming, and my growing focus on .NET and emerging technologies, I need to make deliberate decisions about where my time and energy go.",
+
+        "That's why I've gradually started reducing the number of custom PC orders I accept and slowing down content creation on YouTube. I don't want to abandon pcBhai or the community I've built. Instead, I want to keep it alive while giving more attention to the career path I've been working toward for years.",
+
+        "Looking back, pcBhai has given me much more than an opportunity to explore PC hardware. It has allowed me to create something independently, interact with people across the country, solve real-world problems, and experience the responsibilities of running a small business.",
+
+        "Whatever direction my professional journey takes, I believe these experiences will remain an important part of who I am as an engineer and as a person.",
+
+        "Sometimes, the most valuable lessons come from building something outside the path you originally planned.",
+
+        "And this is one journey I'm genuinely grateful for. Alhamdulillah. 🚀"
+    ],
+
+    CodeSampleCSharp: null
 )
 
-//new(
-//    Slug: "beyond-coding-my-journey-with-pcbhai",
-//    Title: "Beyond Coding: Turning a Passion for Technology into Something Real",
-//    Category: "Technology / Entrepreneurship / Personal Journey",
-//    PublishedDate: "November 2026",
-//    ReadingTime: "8 min read",
-//    IsDraftPlaceholder: false,
 
-//    Excerpt: "From a childhood fascination with computers and gadgets to building a tech-focused YouTube community and serving custom PC customers across Bangladesh. A personal journey of turning curiosity into something meaningful beyond the classroom.",
-
-//    Tags:
-//    [
-//        "pcBhai",
-//        "Technology",
-//        "Custom PC Building",
-//        "Tech Content Creation",
-//        "Entrepreneurship",
-//        "Personal Journey"
-//    ],
-
-//    TableOfContents:
-//    [
-//        "A Childhood Fascination with Technology",
-//        "From a YouTube Hobby to a Community",
-//        "Building Custom PCs Across Bangladesh",
-//        "Lessons Beyond Hardware",
-//        "Making Room for Long-Term Goals"
-//    ],
-
-//    Paragraphs:
-//    [
-//        "From a young age, I've always been fascinated by computers, electronic gadgets, and the technology behind them. That curiosity eventually led me to pursue Electronics and Communication Engineering at university. Alongside my academic journey, I've continued exploring technology, practicing Competitive Programming, and working toward my long-term goal of becoming a Software Engineer.",
-
-//        "But my journey with technology has never been limited to programming or academics.",
-
-//        "My growing interest in computers, laptops, and PC hardware inspired me to start a YouTube channel called pcBhai almost five years ago. What began as a hobby gradually turned into a platform where I could share knowledge about PC components, review hardware, discuss buying decisions, and suggest custom PC configurations for different budgets and requirements.",
-
-//        "Over time, something that started as a personal interest grew into a small but genuine community of people who shared the same enthusiasm for technology. Seeing people engage with the content, ask questions, and trust my recommendations made the experience even more meaningful.",
-
-//        "As the channel grew, I started receiving requests from people interested in building custom PCs. Eventually, I began helping customers select components, source hardware, assemble systems, and get their PCs delivered.",
-
-//        "What makes this experience particularly special is that I've had the opportunity to serve customers across different cities in Bangladesh, including Dhaka, Chittagong, Cumilla, Sylhet, Rajshahi, Barishal, Bogura, Mymensingh, Rangpur, Faridpur, Dinajpur, and many others.",
-
-//        "My approach has been to source components directly from official importers and trusted third-party shops, carefully select compatible hardware, personally assemble and test the systems, and coordinate delivery. I also provide after-sales support to help customers with their questions and technical issues.",
-
-//        "Within the first 9–10 months of actively handling custom PC orders, I successfully processed more than 50 orders. Alhamdulillah. ✨ For me, this was more than just selling computer components. It was an opportunity to turn something I genuinely loved into a real-world experience.",
-
-//        "Of course, it wasn't always easy. Building customer trust, managing orders, determining fair pricing, maintaining consistent quality, and handling logistics all came with their own challenges.",
-
-//        "Perhaps the biggest challenge was convincing people to trust someone they had never met, especially when most of the business was handled remotely. Being based in Dinajpur rather than a major commercial hub made that trust-building process even more important.",
-
-//        "I also had to learn how to communicate with people from different cities, understand their individual requirements, manage expectations, and handle situations where technical preferences and budgets didn't always align. These experiences taught me lessons that I probably wouldn't have learned from a classroom alone.",
-
-//        "Beyond hardware knowledge, I gradually developed practical skills in customer communication, negotiation, organization, pricing, logistics, and problem-solving. Most importantly, I learned how much trust and communication matter when you're trying to build something of your own.",
-
-//        "However, as much as I love this journey, I also understand that I cannot give it the same amount of attention forever. My long-term goal has always been to build a career in the Software Engineering and IT industry. With university studies, Competitive Programming, and my growing focus on .NET and emerging technologies, I need to make deliberate decisions about where my time and energy go.",
-
-//        "That's why I've gradually started reducing the number of custom PC orders I accept and slowing down content creation on YouTube. I don't want to abandon pcBhai or the community I've built. Instead, I want to keep it alive while giving more attention to the career path I've been working toward for years.",
-
-//        "Looking back, pcBhai has given me much more than an opportunity to explore PC hardware. It has allowed me to create something independently, interact with people across the country, solve real-world problems, and experience the responsibilities of running a small business.",
-
-//        "Whatever direction my professional journey takes, I believe these experiences will remain an important part of who I am as an engineer and as a person.",
-
-//        "Sometimes, the most valuable lessons come from building something outside the path you originally planned.",
-
-//        "And this is one journey I'm genuinely grateful for. Alhamdulillah. 🚀"
-//    ],
-
-//    CodeSampleCSharp: null
-//),
-
-        
     ];
 
     public static string ProfileImagePath => _profileImagePath;
